@@ -1,4 +1,25 @@
 import { Injectable } from '@nestjs/common';
+import { FilterQuery } from 'mongoose';
+import { CreateUserDto } from './dtos/createUserDto.dto';
+import { UpdateUserDto } from './dtos/updateUserDto.dto';
+import { User } from './schemas/user.schema';
+import { UsersRepository } from './users.repository';
 
 @Injectable()
-export class UsersService {}
+export class UsersService {
+    constructor(private readonly UsersRepository: UsersRepository) { }
+
+    async findOne(userFilterQuery: FilterQuery<User>): Promise<User> {
+        return this.UsersRepository.findOne(userFilterQuery);
+    }
+
+    async createUser(createUserDto: CreateUserDto): Promise<User> {
+        return this.UsersRepository.create(createUserDto);
+    }
+
+    async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+        return this.UsersRepository.findOneAndUpdate({ userId }, updateUserDto);
+    }
+
+
+}

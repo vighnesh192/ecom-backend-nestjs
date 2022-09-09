@@ -5,7 +5,7 @@ export abstract class EntityRepository<T extends Document> {
 
     async findOne(
         entityFilterQuery: FilterQuery<T>,
-        projection: Record<string, unknown>
+        projection?: Record<string, unknown>
     ): Promise<T | null> {
         // The properties present inside projection would be ignored by findOne
         return this.entityModel.findOne(entityFilterQuery, { ...projection }).exec();
