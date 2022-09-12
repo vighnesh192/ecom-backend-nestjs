@@ -1,12 +1,17 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { CreateUserDto } from 'src/users/dtos/createUserDto.dto';
-import { ExistingUserDto } from 'src/users/dtos/existingUserDto.dto';
-import { User } from 'src/users/schemas/user.schema';
+import { Controller, Post, Body, Get } from '@nestjs/common';
+import { CreateUserDto } from '../users/dtos/createUserDto.dto';
+import { ExistingUserDto } from '../users/dtos/existingUserDto.dto';
+import { User } from '../users/schemas/user.schema';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
     constructor(private authServices: AuthService) { }
+
+    @Get()
+    getHello(): string {
+        return process.env.DB_URI;
+    }
 
     @Post('register')
     async register(@Body() user: CreateUserDto): Promise<User> {
@@ -14,7 +19,7 @@ export class AuthController {
     }
 
     @Post('login')
-    async login(@Body() user: ExistingUserDto): Promise<{ token } | null> {
+    async login(@Body() user: ExistingUserDto): Promise<{ token: string } | null> {
         return this.authServices.login(user);
     }
 }

@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UsersService } from '../users.service';
 
+jest.mock('../users.service');
 describe('UsersService', () => {
   let service: UsersService;
 

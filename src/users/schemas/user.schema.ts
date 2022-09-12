@@ -19,10 +19,9 @@ export class User {
     @Prop()
     password: string;
 
-    @Prop()
-    profilePic: string;
-
-    @Prop()
+    @Prop({
+        type: Object
+    })
     address: addressType;
 
     @Prop()
