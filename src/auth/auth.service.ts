@@ -21,8 +21,7 @@ export class AuthService {
 
     async register(createUser: Readonly<CreateUserDto>): Promise<User> {
         const newUser = { ...createUser };
-        const userExists = this.UserService.findOne({ email: newUser.email });
-
+        const userExists = await this.UserService.findOne({ email: newUser.email });
         if (userExists) {
             throw new HttpException(
                 'An account with that email already exists!',
@@ -44,7 +43,6 @@ export class AuthService {
         const passwordMatched: boolean = await this.doesPasswordMatch(user.password, userExists.password);
 
         if (!passwordMatched) return null;
-
         return userExists;
     }
 
@@ -54,10 +52,13 @@ export class AuthService {
 
     async login(user: ExistingUserDto): Promise<{ token: string } | null> {
         const userIsValid = await this.validateUser(user);
+        console.log("UserISvALID:-", userIsValid);
 
         if (!userIsValid) throw new HttpException("Credentials Invalid", HttpStatus.UNAUTHORIZED);
 
-        const jwt: string = await this.jwtService.signAsync(userIsValid);
+        const jwt: string = await this.jwtService.signAsync(JSON.parse(JSON.stringify(userIsValid)));
+
+        console.log(jwt)
 
         return { token: jwt };
     }
