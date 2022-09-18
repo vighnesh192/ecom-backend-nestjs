@@ -22,6 +22,10 @@ export abstract class MockModel<T> {
         return this.entityStub;
     }
 
+    async create(): Promise<T> {
+        return this.entityStub;
+    }
+
     async findOneAndUpdate(): Promise<T> {
         return this.entityStub;
     }

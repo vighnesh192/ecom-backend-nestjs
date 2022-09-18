@@ -9,7 +9,6 @@ import { UserModel } from "./support/user.model"
 describe('UsersRepository', () => {
     let usersRepository: UsersRepository;
 
-
     describe('find operations', () => {
         let userModel: UserModel;
         let userFilterQuery: FilterQuery<User>
@@ -93,7 +92,7 @@ describe('UsersRepository', () => {
     })
 
     describe('create operations', () => {
-
+        let userModel: UserModel;
         beforeEach(async () => {
             const moduleRef = await Test.createTestingModule({
                 providers: [
@@ -105,26 +104,27 @@ describe('UsersRepository', () => {
                 ]
             }).compile()
 
+            userModel = moduleRef.get<UserModel>(getModelToken(User.name));
             usersRepository = moduleRef.get<UsersRepository>(UsersRepository);
-
-            jest.clearAllMocks();
         })
 
         describe('create', () => {
             describe('when create is called', () => {
                 let user: User;
-                let constructorSpy: jest.SpyInstance;
-                let saveSpy: jest.SpyInstance;
+                // let constructorSpy: jest.SpyInstance;
+                // let saveSpy: jest.SpyInstance;
 
                 beforeEach(async () => {
-                    constructorSpy = jest.spyOn(UserModel.prototype, 'constructorSpy');
-                    saveSpy = jest.spyOn(UserModel.prototype, 'save');
+                    // constructorSpy = jest.spyOn(UserModel.prototype, 'constructorSpy');
+                    // saveSpy = jest.spyOn(UserModel.prototype, 'save');
+                    jest.spyOn(userModel, 'create');
                     user = await usersRepository.create(UserStub());
                 })
 
                 test('then it should call the userModel', () => {
-                    expect(saveSpy).toHaveBeenCalled();
-                    expect(constructorSpy).toHaveBeenCalledWith(UserStub());
+                    // expect(saveSpy).toHaveBeenCalled();
+                    // expect(constructorSpy).toHaveBeenCalledWith(UserStub());
+                    expect(userModel.create).toHaveBeenCalledWith(UserStub())
                 })
 
                 test('then it should return user', () => {
