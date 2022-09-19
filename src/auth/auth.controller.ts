@@ -8,11 +8,6 @@ import { AuthService } from './auth.service';
 export class AuthController {
     constructor(private authServices: AuthService) { }
 
-    @Get()
-    getHello(): string {
-        return process.env.DB_URI;
-    }
-
     @Post('register')
     async register(@Body() user: CreateUserDto): Promise<User> {
         return this.authServices.register(user);
