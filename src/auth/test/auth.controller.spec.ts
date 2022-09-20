@@ -8,6 +8,8 @@ import { UserStub } from './stubs/user.stub';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserModel } from '../../users/test/support/user.model';
+import { ExistingUserDto } from '../../users/dtos/existingUserDto.dto';
+import { JwtService } from '@nestjs/jwt';
 
 jest.mock('../auth.service');
 jest.mock('../../users/users.service');
@@ -17,6 +19,7 @@ describe('AuthController', () => {
   let authController: AuthController;
   let authService: AuthService;
   let usersService: UsersService;
+  let jwtService: JwtService;
   // let model: Model<UserDocument>;
 
   beforeEach(async () => {
@@ -26,6 +29,12 @@ describe('AuthController', () => {
       providers: [
         AuthService,
         UsersService,
+        {
+          provide: JwtService,
+          useValue: {
+            signAsync: jest.fn(() => 'token')
+          }
+        }
         // {
         //   provide: getModelToken(User.name),
         //   // notice that only the functions we call from the model are mocked
@@ -37,6 +46,7 @@ describe('AuthController', () => {
     authController = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
+    jwtService = module.get<JwtService>(JwtService);
     // model = module.get<Model<UserDocument>>(getModelToken(User.name));
     jest.clearAllMocks();
   });
@@ -65,6 +75,30 @@ describe('AuthController', () => {
 
       test('then it should return a user', async () => {
         await expect(user).toEqual(UserStub());
+      })
+    })
+  })
+
+  describe('Login', () => {
+    describe('When login is called', () => {
+      let token: Object;
+      let existingUserStub: ExistingUserDto;
+
+      beforeEach(async () => {
+        existingUserStub = {
+          email: "hello@hello.com",
+          password: "hello"
+        }
+        token = await authController.login(existingUserStub);
+        console.log("TOKEN", token);
+      })
+
+      test('then it should call authService.login', () => {
+        expect(authService.login).toBeCalledWith(existingUserStub);
+      })
+
+      test('then it should return token', () => {
+        expect(token).toEqual({ token: '' })
       })
     })
   })
