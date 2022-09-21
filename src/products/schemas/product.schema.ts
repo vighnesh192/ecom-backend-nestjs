@@ -8,9 +8,7 @@ export class Product {
     @Prop()
     name: string;
 
-    @Prop({
-        type: Object
-    })
+    @Prop()
     description: string;
 
     @Prop()
