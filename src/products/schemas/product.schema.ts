@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose, { Document } from "mongoose";
+import mongoose, { Document, SchemaTypes, Types } from "mongoose";
+import { PublicFile } from "../../files/schemas/publicFile.schema";
+import { User } from "../../users/schemas/user.schema";
 
 export type ProductDocument = Product & Document;
 
@@ -8,22 +10,17 @@ export class Product {
     @Prop()
     name: string;
 
-    @Prop({
-        type: Object
-    })
+    @Prop()
     description: string;
 
     @Prop()
     price: number;
 
-    @Prop()
-    sellerId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
+    @Prop({ type: SchemaTypes.ObjectId, ref: User.name })
+    sellerId: Types.ObjectId
 
-    @Prop()
-    images: [String];
+    @Prop({ type: SchemaTypes.ObjectId, ref: PublicFile.name })
+    images: Types.ObjectId[];
 
     @Prop()
     category: String;
