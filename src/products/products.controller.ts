@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFiles } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, UseInterceptors, UploadedFiles, Request, UseGuards } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { CreateProductDto } from './dtos/createProductDto.dto';
 import { ProductsService } from './products.service';
 import { Product } from './schemas/product.schema';
 import * as path from 'path';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 
 const fileFilter = (req, file, callback) => {
     let ext = path.extname(file.originalname);
@@ -29,13 +30,17 @@ export class ProductsController {
     }
 
     @Post()
-    // Add filesInterceptor and send the files to productsService
+    @UseGuards(JwtGuard)
     @UseInterceptors(
         FilesInterceptor('files[]', 20, {
             fileFilter: fileFilter,
         })
     )
-    async postProduct(@UploadedFiles() images: [Express.Multer.File], @Body() product: CreateProductDto): Promise<Product> {
-        return this.ProductsService.createProduct(images, product);
+    async postProduct(
+        @UploadedFiles() images: [Express.Multer.File],
+        @Body() product: CreateProductDto,
+        @Request() req,
+    ): Promise<Product> {
+        return this.ProductsService.createProduct(images, product, req.user.id);
     }
 }
