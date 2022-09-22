@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { FilterQuery } from 'mongoose';
+import mongoose, { FilterQuery } from 'mongoose';
 import { FilesService } from '../files/files.service';
 import { CreateProductDto } from './dtos/createProductDto.dto';
 import { UpdateProductDto } from './dtos/updateProductDto.dto';
@@ -21,9 +21,9 @@ export class ProductsService {
         return this.ProductsRepository.find(productFilterQuery);
     }
 
-    async createProduct(images: Express.Multer.File[], createProductDto: CreateProductDto): Promise<Product> {
-        // Call uploadPublicFile from filesService
+    async createProduct(images: Express.Multer.File[], createProductDto: CreateProductDto, sellerId: string): Promise<Product> {
         let uploadedImages = await this.FilesService.uploadPublicFile(images);
+        createProductDto.sellerId = new mongoose.Types.ObjectId(sellerId)
         createProductDto.images = uploadedImages.map(image => image._id);
         return this.ProductsRepository.create(createProductDto);
     }

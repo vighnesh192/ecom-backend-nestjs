@@ -11,4 +11,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
             secretOrKey: process.env.SECRET
         })
     }
+
+    // Validate is called by Passport and serializes the returned value in the req object.
+    // Payload is extracted from the jwt token which equals to User object in this case
+    async validate(payload: any) {
+        return { id: payload.sub, email: payload.email };
+    }
 }

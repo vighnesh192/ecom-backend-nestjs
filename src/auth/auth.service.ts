@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { CreateUserDto } from '../users/dtos/createUserDto.dto';
-import { User } from '../users/schemas/user.schema';
+import { User, UserDocument } from '../users/schemas/user.schema';
 import { ExistingUserDto } from '../users/dtos/existingUserDto.dto';
 
 @Injectable()
@@ -36,8 +36,8 @@ export class AuthService {
         return this.UserService.createUser(newUser);
     }
 
-    async validateUser(user: ExistingUserDto): Promise<User | null> {
-        const userExists: User = await this.UserService.findOne({ email: user.email })
+    async validateUser(user: ExistingUserDto): Promise<UserDocument | null> {
+        const userExists: UserDocument = await this.UserService.findOne({ email: user.email })
         if (!userExists) return null;
 
         const passwordMatched: boolean = await this.doesPasswordMatch(user.password, userExists.password);
@@ -56,7 +56,7 @@ export class AuthService {
 
         if (!userIsValid) throw new HttpException("Credentials Invalid", HttpStatus.UNAUTHORIZED);
 
-        const jwt: string = await this.jwtService.signAsync(JSON.parse(JSON.stringify(userIsValid)));
+        const jwt: string = await this.jwtService.signAsync({ sub: userIsValid.id, email: userIsValid.email });
 
         console.log(jwt)
 
