@@ -2,6 +2,7 @@ import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductsModule } from '../products/products.module';
 import { FilesController } from './files.controller';
+import { FilesRepository } from './files.repository';
 import { FilesService } from './files.service';
 import { PublicFile, PublicFileSchema } from './schemas/publicFile.schema';
 
@@ -11,6 +12,6 @@ import { PublicFile, PublicFileSchema } from './schemas/publicFile.schema';
     forwardRef(() => ProductsModule),
   ],
   controllers: [FilesController],
-  providers: [FilesService]
+  providers: [FilesService, FilesRepository]
 })
 export class FilesModule { }

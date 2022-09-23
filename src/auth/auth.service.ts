@@ -52,13 +52,10 @@ export class AuthService {
 
     async login(user: ExistingUserDto): Promise<{ token: string } | null> {
         const userIsValid = await this.validateUser(user);
-        console.log("UserISvALID:-", userIsValid);
 
         if (!userIsValid) throw new HttpException("Credentials Invalid", HttpStatus.UNAUTHORIZED);
 
         const jwt: string = await this.jwtService.signAsync({ sub: userIsValid.id, email: userIsValid.email });
-
-        console.log(jwt)
 
         return { token: jwt };
     }

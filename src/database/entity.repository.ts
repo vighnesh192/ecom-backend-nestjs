@@ -1,4 +1,6 @@
 import { Document, FilterQuery, Model, UpdateQuery } from "mongoose";
+import { HttpException } from '@nestjs/common/exceptions';
+import { HttpStatus } from '@nestjs/common/enums';
 
 export abstract class EntityRepository<T extends Document> {
     constructor(protected readonly entityModel: Model<T>) { }
@@ -18,7 +20,15 @@ export abstract class EntityRepository<T extends Document> {
     async create(entityDetails: unknown): Promise<T> {
         // const entity = new this.entityModel(entityDetails)
         // return entity.save();
-        return this.entityModel.create(entityDetails);
+        try {
+            const savedDoc = this.entityModel.create(entityDetails);
+            return savedDoc;
+        } catch (error) {
+            throw new HttpException(
+                "Document Creation Error",
+                HttpStatus.NOT_IMPLEMENTED,
+            );
+        }
     }
 
     async findOneAndUpdate(

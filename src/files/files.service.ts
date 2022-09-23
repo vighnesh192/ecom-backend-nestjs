@@ -20,13 +20,12 @@ export class FilesService {
             }).promise();
 
             return this.FilesRepository.create({
-                key: uploadResult.Key,
-                url: uploadResult.Location
+                key: uploadResult.Key.toString(),
+                url: uploadResult.Location.toString()
             })
         }
 
         publicFiles = Promise.all(files.map(uploadToS3AndDb))
-
         return publicFiles;
     }
 }
