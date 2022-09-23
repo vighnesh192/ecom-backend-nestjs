@@ -6,7 +6,7 @@ export class CreateProductDto {
     stock: Number;
     category: String;
     price: Number;
-    images: mongoose.Types.ObjectId[];
-    sellerId: mongoose.Types.ObjectId;
-    _id?: mongoose.Types.ObjectId;
+    images: String[];
+    sellerId: String;
+    _id?: String;
 }

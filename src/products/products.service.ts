@@ -5,6 +5,8 @@ import { CreateProductDto } from './dtos/createProductDto.dto';
 import { UpdateProductDto } from './dtos/updateProductDto.dto';
 import { ProductsRepository } from './products.repository';
 import { Product } from './schemas/product.schema';
+const ObjectID = require("mongodb").ObjectId;
+type ObjectID = typeof import("mongodb").ObjectId;
 
 @Injectable()
 export class ProductsService {
@@ -23,8 +25,8 @@ export class ProductsService {
 
     async createProduct(images: Express.Multer.File[], createProductDto: CreateProductDto, sellerId: string): Promise<Product> {
         let uploadedImages = await this.FilesService.uploadPublicFile(images);
-        createProductDto.sellerId = new mongoose.Types.ObjectId(sellerId)
-        createProductDto.images = uploadedImages.map(image => image._id);
+        createProductDto.sellerId = sellerId;
+        createProductDto.images = uploadedImages.map(image => image._id.toHexString());
         return this.ProductsRepository.create(createProductDto);
     }
 

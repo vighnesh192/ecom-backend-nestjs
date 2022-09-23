@@ -37,7 +37,7 @@ export class ProductsController {
         })
     )
     async postProduct(
-        @UploadedFiles() images: [Express.Multer.File],
+        @UploadedFiles() images: Express.Multer.File[],
         @Body() product: CreateProductDto,
         @Request() req,
     ): Promise<Product> {

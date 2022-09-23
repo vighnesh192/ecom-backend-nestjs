@@ -7,10 +7,13 @@ import { UsersModule } from '../users/users.module';
 import { UsersService } from '../users/users.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from './guards/jwt.strategy';
 
 @Module({
     imports: [
         UsersModule,
+        PassportModule,
         JwtModule.registerAsync({
             useFactory: () => ({
                 secret: process.env.SECRET,
@@ -20,6 +23,6 @@ import { AuthService } from './auth.service';
         MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])
     ],
     controllers: [AuthController],
-    providers: [AuthService, UsersService, UsersRepository]
+    providers: [AuthService, UsersService, UsersRepository, JwtStrategy]
 })
 export class AuthModule { }

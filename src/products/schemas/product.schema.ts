@@ -19,7 +19,7 @@ export class Product {
     @Prop({ type: SchemaTypes.ObjectId, ref: User.name })
     sellerId: Types.ObjectId
 
-    @Prop({ type: SchemaTypes.ObjectId, ref: PublicFile.name })
+    @Prop({ type: [SchemaTypes.ObjectId], ref: PublicFile.name })
     images: Types.ObjectId[];
 
     @Prop()

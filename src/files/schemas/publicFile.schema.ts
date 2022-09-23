@@ -1,13 +1,14 @@
-import { Prop, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document } from "mongoose";
 
 export type PublicFileDocument = PublicFile & Document;
 
+@Schema()
 export class PublicFile {
-    @Prop()
+    @Prop({ required: true })
     url: String;
 
-    @Prop()
+    @Prop({ required: true })
     key: String
 }
 
