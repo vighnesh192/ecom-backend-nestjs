@@ -26,6 +26,9 @@ export class User {
 
     @Prop()
     phoneNo: number;
+
+    @Prop({ default: 'Customer' })
+    type: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
