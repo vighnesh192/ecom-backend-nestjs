@@ -11,6 +11,7 @@ export const UserStub = (): User => {
             pincode: 123456
         },
         phoneNo: 1234567890,
-        password: "password"
+        password: "password",
+        type: "Customer"
     }
 }

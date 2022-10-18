@@ -7,4 +7,5 @@ export class UpdateUserDto {
     password?: string;
     address?: addressType;
     phoneNo?: number;
+    type?: string;
 }
