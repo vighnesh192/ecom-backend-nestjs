@@ -10,6 +10,7 @@ import { Model } from 'mongoose';
 import { UserModel } from '../../users/test/support/user.model';
 import { ExistingUserDto } from '../../users/dtos/existingUserDto.dto';
 import { JwtService } from '@nestjs/jwt';
+import { JwtGuard } from '../guards/jwt.guard';
 
 jest.mock('../auth.service');
 jest.mock('../../users/users.service');
@@ -102,4 +103,34 @@ describe('AuthController', () => {
       })
     })
   })
+
+  // describe('checkLoggedIn', () => {
+  //   describe('When checkLoggedIn is called', () => {
+  //     let guard;
+  //     let returnObj = {
+  //       loggedIn: true,
+  //       profile: {
+  //         id: '',
+  //         email: ''
+  //       }
+  //     }
+  //     let checkLoggedInReturnValue;
+  //     let req = {
+  //       user: returnObj.profile
+  //     }
+  //     beforeEach(async () => {
+  //       let checkLoggedInReturnValue = await authController.checkLoggedin(req)
+  //       const guards = Reflect.getMetadata('__guards__', authController.checkLoggedin)
+  //       guard = new (guards[0])
+  //     })
+
+  //     test('then it should be guarded with JwtGuard', () => {
+  //       expect(guard).toBeInstanceOf(JwtGuard)
+  //     })
+
+  //     test('then it should return checkLoggedInReturnValue', () => {
+  //       expect(authController.checkLoggedin(req)).toEqual(checkLoggedInReturnValue);
+  //     })
+  //   })
+  // })
 });

@@ -21,7 +21,7 @@ export class AuthController {
 
     @UseGuards(JwtGuard)
     @Get('checkLoggedIn')
-    async checkLoggedin(@Request() req) {
+    async checkLoggedin(@Request() req): Promise<{ loggedIn: boolean, profile: { id: string, email: string } }> {
         return {
             loggedIn: true,
             profile: req.user,
