@@ -29,6 +29,11 @@ export class ProductsController {
         return this.ProductsService.findOne({ _id: params.id })
     }
 
+    @Get('seller/:sellerId')
+    async getProductsBySeller(@Param() params): Promise<Product[]> {
+        return this.ProductsService.find({ sellerId: params.sellerId })
+    }
+
     @Post()
     @UseGuards(JwtGuard)
     @UseInterceptors(
