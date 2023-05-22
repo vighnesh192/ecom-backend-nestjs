@@ -9,6 +9,6 @@ export const ProductStub = (): Product => {
         sellerId: new mongoose.Types.ObjectId(),
         category: 'Furniture',
         stock: 5,
-        images: [new mongoose.Types.ObjectId()]
+        images: [new String]
     }
 }

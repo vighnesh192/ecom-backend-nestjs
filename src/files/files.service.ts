@@ -3,6 +3,7 @@ import { S3 } from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import { FilesRepository } from './files.repository';
 import { PublicFile, PublicFileDocument } from './schemas/publicFile.schema';
+import { FilterQuery } from 'mongoose';
 
 @Injectable()
 export class FilesService {
@@ -27,5 +28,9 @@ export class FilesService {
 
         publicFiles = Promise.all(files.map(uploadToS3AndDb))
         return publicFiles;
+    }
+
+    async findOne(fileFilterQuery: FilterQuery<PublicFile>): Promise<PublicFile> {
+        return this.FilesRepository.findOne(fileFilterQuery);
     }
 }
